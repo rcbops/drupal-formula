@@ -1,0 +1,25 @@
+{% set db_interface = salt['pillar.get']("interfaces:private", 'eth0') %}
+{% set version = salt['pillar.get']("drupal:version", '7.32') %}
+{% set versions = {
+    '7.32': {
+        'source': 'http://ftp.drupal.org/files/projects/drupal-7.32.tar.gz',
+        'md5': 'd5d121a6ce974f2d20604a7e10e1987a'
+    },
+    '7.31': {
+        'source': 'http://ftp.drupal.org/files/projects/drupal-7.31.tar.gz',
+        'md5': 'de256f202930d3ef5ccc6aebc550adaf'
+    }
+} %}
+{% set drupal = {
+    'db_user': salt['pillar.get']('drupal:db:user', 'drupal_bench'),
+    'db_password': salt['pillar.get']('drupal:db:password', 'drupal_bench'),
+    'db_host': salt['pillar.get']('drupal:db:host', "'%'"),
+    'db_interface': db_interface,
+    'db_name': salt['pillar.get']('drupal:db:name', 'drupal_db'),
+    'db_read_port': salt['pillar.get']('drupal:db:read:port', '3306'),
+    'db_write_port': salt['pillar.get']('drupal:db:write:port', '13306'),
+    'master': salt['pillar.get']('drupal:db:host', 'localhost'),
+    'version': version,
+    'source': versions[version]['source'],
+    'md5': versions[version]['md5']
+} %}
