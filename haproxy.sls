@@ -12,7 +12,7 @@ haproxy-repo:
 haproxy-software:
   pkg.installed:
     - pkgs:
-      - haproxy
+      - haproxy: 1.5.8-1ppa1~precise
 
 {{ keyname }}.pem:
   file.managed:
