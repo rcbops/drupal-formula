@@ -2,17 +2,24 @@
 {%- set interface = salt['pillar.get']('interfaces:public', 'eth0') -%}
 {%- set ip = salt['network.ipaddrs'](interface)[0] -%}
 {%- set cn = salt['pillar.get']('ssl:cn', ip) -%}
-haproxy-repo:
-  pkgrepo.managed:
-    - humanname: haproxy
-    - name: ppa:vbernat/haproxy-1.5
+
+# Temporary hack for now. Should switch back to pkgrepo.manahed
+apt-add-repository -y ppa:vbernat/haproxy-1.5:
+  cmd.run:
     - require_in:
       - pkg:haproxy-software
+
+#haproxy-repo:
+#  pkgrepo.managed:
+#    - humanname: haproxy
+#    - name: ppa:vbernat/haproxy-1.5
+#    - require_in:
+#      - pkg:haproxy-software
 
 haproxy-software:
   pkg.installed:
     - pkgs:
-      - haproxy: 1.5.8-1ppa1~precise
+      - haproxy
 
 {{ keyname }}.pem:
   file.managed:
